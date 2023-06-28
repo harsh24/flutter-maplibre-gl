@@ -1,7 +1,5 @@
 // import 'dart:developer';
 
-import 'dart:developer';
-
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:maplibre_gl/mapbox_gl.dart';
