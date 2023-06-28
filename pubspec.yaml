@@ -8,12 +8,12 @@ dependencies:
     sdk: flutter
   maplibre_gl_platform_interface:
     git:
-      url: https://github.com/maplibre/flutter-maplibre-gl.git
+      url: https://github.com/harsh24/flutter-maplibre-gl.git
       path: maplibre_gl_platform_interface
       ref: main
   maplibre_gl_web:
     git:
-      url: https://github.com/maplibre/flutter-maplibre-gl.git
+      url: https://github.com/harsh24/flutter-maplibre-gl.git
       path: maplibre_gl_web
       ref: main
 
@@ -35,6 +35,6 @@ flutter:
         default_package: mapbox_gl_web
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
   # Flutter versions prior to 1.10 did not support the flutter.plugin.platforms map.
   flutter: ">=2.0.0"
