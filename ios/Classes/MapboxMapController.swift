@@ -143,7 +143,7 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
             } else {
                 result(nil)
             }
-        case "map#invalidateAmbientCache":
+         case "map#invalidateAmbientCache":
             MGLOfflineStorage.shared.invalidateAmbientCache {
                 error in
                 if let error = error {
@@ -152,6 +152,21 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
                     result(nil)
                 }
             }
+         case "map#getClusterZoomLevel":
+            guard let arguments = methodCall.arguments as? [String: Any] else { return }
+            guard let sourceName = arguments["sourceName"] as? String else { return }
+            guard let featureJson = arguments["featureJson"] as? String else { return }
+
+            if let geoJsonSource = mapView.style?.source(withIdentifier: sourceName) as? MGLShapeSource {
+        
+            guard let shape = try? MGLShape(data: featureJson.data(using: .utf8)!, encoding: String.Encoding.utf8.rawValue) as! MGLPointFeatureCluster else{ return }
+
+            //  let pointFeature = shape as MGLPointFeatureCluster
+            
+              let x = geoJsonSource.zoomLevel(forExpanding: shape)
+               result(x)              
+            }
+        break;
         case "map#updateMyLocationTrackingMode":
             guard let arguments = methodCall.arguments as? [String: Any] else { return }
             if let myLocationTrackingMode = arguments["mode"] as? UInt,

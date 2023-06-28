@@ -1,3 +1,7 @@
+// import 'dart:developer';
+
+import 'dart:developer';
+
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:maplibre_gl/mapbox_gl.dart';
@@ -6,38 +10,46 @@ import 'offline_region_map.dart';
 import 'page.dart';
 
 final LatLngBounds hawaiiBounds = LatLngBounds(
-  southwest: const LatLng(17.26672, -161.14746),
-  northeast: const LatLng(23.76523, -153.74267),
+  southwest: const LatLng(-33.684204, 150.138734),
+  northeast: const LatLng(-33.577643, 150.311415),
 );
 
 final LatLngBounds santiagoBounds = LatLngBounds(
-  southwest: const LatLng(-33.5597, -70.49102),
-  northeast: const LatLng(-33.33282, -153.74267),
+  southwest: const LatLng(-33.686037, 150.25107),
+  northeast: const LatLng(-33.579478, 150.423753),
 );
 
 final LatLngBounds aucklandBounds = LatLngBounds(
-  southwest: const LatLng(-36.87838, 174.73205),
-  northeast: const LatLng(-36.82838, 174.79745),
+  southwest: const LatLng(-33.935670, 151.177711),
+  northeast: const LatLng(-33.880107, 151.266975),
 );
 
 final List<OfflineRegionDefinition> regionDefinitions = [
   OfflineRegionDefinition(
     bounds: hawaiiBounds,
-    minZoom: 3.0,
-    maxZoom: 8.0,
-    mapStyleUrl: "https://demotiles.maplibre.org/style.json",
+    minZoom: 13.0,
+    maxZoom: 14.0,
+    mapStyleUrl:
+        "https://cdn.shopify.com/s/files/1/0577/6159/5426/files/bushwalk.json?v=1686989331",
+
+    // "https://api.maptiler.com/maps/outdoor-v2/style.json?key=Gt6v5tQ3MeLWu972Z755",
   ),
   OfflineRegionDefinition(
     bounds: santiagoBounds,
-    minZoom: 10.0,
-    maxZoom: 16.0,
-    mapStyleUrl: "https://demotiles.maplibre.org/style.json",
+    minZoom: 13.0,
+    maxZoom: 14.0,
+    mapStyleUrl:
+        "https://cdn.shopify.com/s/files/1/0577/6159/5426/files/bushwalk.json?v=1686989331",
+    // "https://api.maptiler.com/maps/outdoor-v2/style.json?key=Gt6v5tQ3MeLWu972Z755",
   ),
   OfflineRegionDefinition(
     bounds: aucklandBounds,
-    minZoom: 13.0,
+    minZoom: 12.0,
     maxZoom: 16.0,
-    mapStyleUrl: "https://demotiles.maplibre.org/style.json",
+    mapStyleUrl:
+        "https://cdn.shopify.com/s/files/1/0577/6159/5426/files/bushwalk.json?v=1686989331",
+
+    // "https://api.maptiler.com/maps/outdoor-v2/style.json?key=Gt6v5tQ3MeLWu972Z755",
   ),
 ];
 
@@ -119,6 +131,7 @@ class _OfflineRegionsBodyState extends State<OfflineRegionBody> {
   @override
   void initState() {
     super.initState();
+    clearAmbientCache();
     _updateListOfRegions();
   }
 

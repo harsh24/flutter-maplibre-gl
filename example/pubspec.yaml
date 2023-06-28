@@ -1,10 +1,10 @@
 name: maplibre_gl_example
 description: Demonstrates how to use the maplibre_gl plugin.
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -13,7 +13,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  location: ^4.0.0
+  location:
+    git:
+      url: https://github.com/fairuzmn/flutterlocation.git
+      ref: location-v5.5.0.0-dev.9-fix
+      path: packages/location
   path_provider: ^2.0.0
   http: ^0.13.0
   collection: ^1.0.0
@@ -39,7 +43,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -6,8 +6,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:location/location.dart';
 import 'package:maplibre_gl_example/get_map_informations.dart';
 import 'package:maplibre_gl_example/given_bounds.dart';
 
@@ -85,10 +85,10 @@ class _MapsDemoState extends State<MapsDemo> {
 
   void _pushPage(BuildContext context, ExamplePage page) async {
     if (!kIsWeb) {
-      final location = Location();
-      final hasPermissions = await location.hasPermission();
-      if (hasPermissions != PermissionStatus.granted) {
-        await location.requestPermission();
+      final permissionGrantedResult = await getPermissionStatus();
+      if (permissionGrantedResult != PermissionStatus.authorizedAlways ||
+          permissionGrantedResult != PermissionStatus.authorizedWhenInUse) {
+        await requestPermission();
       }
     }
     Navigator.of(context).push(MaterialPageRoute<void>(

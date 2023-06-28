@@ -990,6 +990,12 @@ class MaplibreMapController extends ChangeNotifier {
     return _mapboxGlPlatform.queryRenderedFeatures(point, layerIds, filter);
   }
 
+   /// Query rendered features at a point in screen cooridnates
+  Future<int> getClusterZoomLevel(
+      String sourceName, String featureJson) async {
+    return _mapboxGlPlatform.getClusterZoomLevel(sourceName, featureJson);
+  }
+
   /// Query rendered features in a Rect in screen coordinates
   Future<List> queryRenderedFeaturesInRect(
       Rect rect, List<String> layerIds, String? filter) async {

@@ -803,6 +803,19 @@ final class MapboxMapController
           }
           break;
         }
+      case "map#getClusterZoom":{
+        String sourceName = call.argument("sourceName");
+        String featureJson = call.argument("featureJson");
+
+        GeoJsonSource geoJsonSource = style.getSourceAs(sourceName);
+        Feature feature = Feature.fromJson(featureJson);
+        
+        final int x = geoJsonSource.getClusterExpansionZoom(feature);
+
+        result.success(x);
+
+        break;
+      }
       case "map#queryRenderedFeatures":
         {
           Map<String, Object> reply = new HashMap<>();

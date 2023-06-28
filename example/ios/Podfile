@@ -2,13 +2,14 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/m0nac0/flutter-maplibre-podspecs.git'
 
 # Uncomment this line to define a global platform for your project
-platform :ios, '9.0'
+platform :ios, '13.0'
 
 pod 'MapLibre'
 pod 'MapLibreAnnotationExtension'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+ENV['SWIFT_VERSION'] = '5'
 
 project 'Runner', {
   'Debug' => :debug,

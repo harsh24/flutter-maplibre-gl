@@ -47,6 +47,16 @@ Future<List<OfflineRegion>> mergeOfflineRegions(String path) async {
   return regions.map((region) => OfflineRegion.fromMap(region)).toList();
 }
 
+@override
+Future clearAmbientCache() async {
+  try {
+    await _globalChannel.invokeMethod('clearAmbientCache');
+    return null;
+  } on PlatformException catch (e) {
+    return new Future.error(e);
+  }
+}
+
 Future<List<OfflineRegion>> getListOfRegions() async {
   String regionsJson = await _globalChannel.invokeMethod(
     'getListOfRegions',

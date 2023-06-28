@@ -90,6 +90,10 @@ class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
         OfflineManagerUtils.setOfflineTileCountLimit(
             result, context, methodCall.<Number>argument("limit").longValue());
         break;
+      case "clearAmbientCache":
+        OfflineManagerUtils.clearAmbientCache(
+            result, context);
+        break;
       case "setHttpHeaders":
         Map<String, String> headers = (Map<String, String>) methodCall.argument("headers");
         MapboxHttpRequestUtil.setHttpHeaders(headers, result);

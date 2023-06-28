@@ -101,6 +101,15 @@ public class SwiftMapboxGlFlutterPlugin: NSObject, FlutterPlugin {
             case "getListOfRegions":
                 // Note: this does not download anything from internet, it only fetches data drom database
                 OfflineManagerUtils.regionsList(result: result)
+            case "clearAmbientCache":
+            MGLOfflineStorage.shared.clearAmbientCache {
+                error in
+                if let error = error {
+                    result(error)
+                } else {
+                    result(nil)
+                }
+            }
             case "deleteOfflineRegion":
                 guard let args = methodCall.arguments as? [String: Any],
                       let id = args["id"] as? Int
