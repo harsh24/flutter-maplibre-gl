@@ -803,7 +803,7 @@ final class MapboxMapController
           }
           break;
         }
-      case "map#getClusterZoom":{
+      case "map#getClusterZoomLevel":{
         String sourceName = call.argument("sourceName");
         String featureJson = call.argument("featureJson");
 
