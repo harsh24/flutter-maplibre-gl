@@ -287,6 +287,11 @@ class MaplibreMapController extends ChangeNotifier {
     return _mapboxGlPlatform.moveCamera(cameraUpdate);
   }
 
+  Future<CameraPosition?> cameraThatFitsCoordinateBounds(
+      CameraUpdate cameraUpdate) async {
+    return _mapboxGlPlatform.cameraThatFitsCoordinateBounds(cameraUpdate);
+  }
+
   /// Adds a new geojson source
   ///
   /// The json in [geojson] has to comply with the schema for FeatureCollection
@@ -990,9 +995,8 @@ class MaplibreMapController extends ChangeNotifier {
     return _mapboxGlPlatform.queryRenderedFeatures(point, layerIds, filter);
   }
 
-   /// Query rendered features at a point in screen cooridnates
-  Future<int> getClusterZoomLevel(
-      String sourceName, String featureJson) async {
+  /// Query rendered features at a point in screen cooridnates
+  Future<int> getClusterZoomLevel(String sourceName, String featureJson) async {
     return _mapboxGlPlatform.getClusterZoomLevel(sourceName, featureJson);
   }
 
