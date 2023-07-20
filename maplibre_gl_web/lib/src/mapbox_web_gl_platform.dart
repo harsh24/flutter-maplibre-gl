@@ -603,13 +603,6 @@ class MaplibreMapController extends MapLibreGlPlatform
   }
 
   @override
-  Future<CameraPosition?> cameraThatFitsCoordinateBounds(
-      CameraUpdate cameraUpdate) async {
-    print('setAttributionButtonMargins not available in web');
-    return null;
-  }
-
-  @override
   void setCompassEnabled(bool compassEnabled) {
     _updateNavigationControl(compassEnabled: compassEnabled);
   }

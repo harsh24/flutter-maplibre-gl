@@ -309,13 +309,6 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
             let returnVal = mapView.metersPerPoint(atLatitude: latitude)
             reply["metersperpixel"] = returnVal as NSObject
             result(reply)
-        case "map#cameraThatFitsCoordinateBounds":
-            guard let arguments = methodCall.arguments as? [String: Any] else { return }
-            guard let cameraUpdate = arguments["cameraUpdate"] as? [Any] else { return }
-            let camera = Convert
-                .parseCameraUpdate(cameraUpdate: cameraUpdate, mapView: mapView)
-            
-            result(camera?.toDict(mapView: mapView))
         case "map#toLatLng":
             guard let arguments = methodCall.arguments as? [String: Any] else { return }
             guard let x = arguments["x"] as? Double else { return }

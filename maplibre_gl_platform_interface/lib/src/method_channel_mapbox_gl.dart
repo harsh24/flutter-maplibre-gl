@@ -233,19 +233,6 @@ class MethodChannelMaplibreGl extends MapLibreGlPlatform {
   }
 
   @override
-  Future<CameraPosition?> cameraThatFitsCoordinateBounds(
-      CameraUpdate cameraUpdate) async {
-    final dynamic json = await _channel.invokeMethod(
-      'map#cameraThatFitsCoordinateBounds',
-      <String, dynamic>{
-        'cameraUpdate': cameraUpdate.toJson(),
-      },
-    );
-
-    return CameraPosition.fromMap(json);
-  }
-
-  @override
   Future<bool?> animateCamera(cameraUpdate, {Duration? duration}) async {
     return await _channel.invokeMethod('camera#animate', <String, dynamic>{
       'cameraUpdate': cameraUpdate.toJson(),
