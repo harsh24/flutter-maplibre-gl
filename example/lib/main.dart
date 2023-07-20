@@ -85,12 +85,28 @@ class _MapsDemoState extends State<MapsDemo> {
 
   void _pushPage(BuildContext context, ExamplePage page) async {
     if (!kIsWeb) {
-      final permissionGrantedResult = await getPermissionStatus();
-      if (permissionGrantedResult != PermissionStatus.authorizedAlways ||
-          permissionGrantedResult != PermissionStatus.authorizedWhenInUse) {
-        await requestPermission();
+      Location location = new Location();
+
+      bool _serviceEnabled;
+      PermissionStatus _permissionGranted;
+
+      _serviceEnabled = await location.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+        if (!_serviceEnabled) {
+          return;
+        }
+      }
+
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted != PermissionStatus.granted) {
+          return;
+        }
       }
     }
+    
     Navigator.of(context).push(MaterialPageRoute<void>(
         builder: (_) => Scaffold(
               appBar: AppBar(title: Text(page.title)),
