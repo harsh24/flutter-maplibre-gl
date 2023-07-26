@@ -314,7 +314,7 @@ class LayerPropertyConverter {
         }
     }
 
-    private class func interpretExpression(propertyName: String,
+    class func interpretExpression(propertyName: String,
                                            expression: String) -> NSExpression?
     {
         let isColor = propertyName.contains("color")

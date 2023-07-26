@@ -61,27 +61,51 @@ class FullMapState extends State<FullMap> {
   static Future<void> addGeojsonCluster(
       MaplibreMapController controller) async {
     await controller.addSource(
-        "earthquakes",
-        GeojsonSourceProperties(
-            data:
-                'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
-            cluster: true,
-            clusterMaxZoom: 14, // Max zoom to cluster points on
-            clusterRadius:
-                50 // Radius of each cluster when clustering points (defaults to 50)
-            ));
+      "earthquakes",
+      GeojsonSourceProperties(
+        data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
+        cluster: true,
+        clusterMaxZoom: 14, // Max zoom to cluster points on
+        clusterRadius:
+            50, // Radius of each cluster when clustering points (defaults to 50)
+        clusterProperties: {
+          "felt": [
+            Expressions.all,
+            [
+              Expressions.smaller,
+              [Expressions.get, "mag"],
+              5
+            ]
+          ],
+        },
+      ),
+    );
+    var colors = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
+
     await controller.addLayer(
-        "earthquakes",
-        "earthquakes-circles",
-        CircleLayerProperties(circleColor: [
-          Expressions.step,
-          [Expressions.get, 'point_count'],
-          '#51bbd6',
-          100,
-          '#f1f075',
-          750,
-          '#f28cb1'
-        ], circleRadius: [
+      "earthquakes",
+      "earthquakes-circles",
+      CircleLayerProperties(
+        // circleColor: x,
+        circleColor: [
+          'case',
+          [Expressions.get, 'felt'],
+          // x,
+          colors[0],
+          colors[4],
+          /*  Expressions.step,
+          [Expressions.get, "mag"],
+          colors[0],
+          2.0,
+          colors[1],
+          3.0,
+          colors[2],
+          4,
+          colors[3],
+          5,
+          colors[4], */
+        ],
+        circleRadius: [
           Expressions.step,
           [Expressions.get, 'point_count'],
           20,
@@ -89,7 +113,10 @@ class FullMapState extends State<FullMap> {
           30,
           750,
           40
-        ]));
+        ],
+      ),
+      // filter: x,
+    );
     await controller.addLayer(
         "earthquakes",
         "earthquakes-count",

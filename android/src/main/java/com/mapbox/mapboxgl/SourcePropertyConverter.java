@@ -2,6 +2,9 @@ package com.mapbox.mapboxgl;
 
 import android.net.Uri;
 import com.google.gson.Gson;
+import android.util.Log;
+import java.util.ArrayList;
+import static com.mapbox.mapboxgl.Convert.toMap;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngQuad;
@@ -14,6 +17,7 @@ import com.mapbox.mapboxsdk.style.sources.RasterSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
 import com.mapbox.mapboxsdk.style.sources.TileSet;
 import com.mapbox.mapboxsdk.style.sources.VectorSource;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -31,8 +35,7 @@ class SourcePropertyConverter {
       return null;
     }
 
-    final TileSet tileSet =
-        new TileSet("2.1.0", (String[]) Convert.toList(tiles).toArray(new String[0]));
+    final TileSet tileSet = new TileSet("2.1.0", (String[]) Convert.toList(tiles).toArray(new String[0]));
 
     final Object bounds = data.get("bounds");
     if (bounds != null) {
@@ -107,6 +110,26 @@ class SourcePropertyConverter {
     if (tolerance != null) {
       options = options.withTolerance(Convert.toFloat(tolerance));
     }
+
+    final Object clusterProperties = data.get("clusterProperties");
+
+    if (clusterProperties != null) {
+      final Map<String, ArrayList> properties = (Map<String, ArrayList>) toMap(clusterProperties);
+
+      for (Map.Entry<String, ArrayList> entry : properties.entrySet()) {
+        final ArrayList value = entry.getValue();
+
+        Expression expression1 = LayerPropertyConverter
+            .interpretClusterPropertyExpression(value.get(0));
+        Expression expression2 = LayerPropertyConverter
+            .interpretClusterPropertyExpression(value.get(1));
+
+        options = options.withClusterProperty(entry.getKey(), expression1,
+            expression2);
+      }
+
+    }
+
     return options;
   }
 
@@ -133,9 +156,8 @@ class SourcePropertyConverter {
   static ImageSource buildImageSource(String id, Map<String, Object> properties) {
     final Object url = properties.get("url");
     List<LatLng> coordinates = Convert.toLatLngList(properties.get("coordinates"), true);
-    final LatLngQuad quad =
-        new LatLngQuad(
-            coordinates.get(0), coordinates.get(1), coordinates.get(2), coordinates.get(3));
+    final LatLngQuad quad = new LatLngQuad(
+        coordinates.get(0), coordinates.get(1), coordinates.get(2), coordinates.get(3));
     try {
       final URI uri = new URI(Convert.toString(url));
       return new ImageSource(id, quad, uri);

@@ -453,4 +453,11 @@ class LayerPropertyConverter {
 
     return properties.toArray(new PropertyValue[properties.size()]);
   }
+
+  static Expression interpretClusterPropertyExpression(Object o) {
+    final JsonParser parser = new JsonParser();
+    final JsonElement jsonElement = parser.parse(o.toString());
+
+    return Expression.Converter.convert(jsonElement);
+  }
 }
