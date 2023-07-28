@@ -52,7 +52,7 @@ SPEC CHECKSUMS:
   MapLibre: 5aa820115d91293a4d09e681e7470f88bd34b672
   maplibre_gl: 2a0ce99f40b3a133b0e8b40b5ef37e0562165399
   MapLibreAnnotationExtension: bc7f1041206218d7d24ba0908e3145cd54b86664
-  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   SwiftLocation: 83e0ea75a1969cee3a1197e2b7095603fc23fde5
 
 PODFILE CHECKSUM: 68ad0ed4452adcc174c3d8ce1f3beefe3ea9027e

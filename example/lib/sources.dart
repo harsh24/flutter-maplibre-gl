@@ -70,11 +70,11 @@ class FullMapState extends State<FullMap> {
             50, // Radius of each cluster when clustering points (defaults to 50)
         clusterProperties: {
           "felt": [
-            Expressions.all,
+            Expressions.any,
             [
-              Expressions.smaller,
+              Expressions.equal,
               [Expressions.get, "mag"],
-              5
+              4.0
             ]
           ],
         },
@@ -82,13 +82,13 @@ class FullMapState extends State<FullMap> {
     );
     var colors = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
 
-    await controller.addLayer(
+    await controller.addCircleLayer(
       "earthquakes",
       "earthquakes-circles",
       CircleLayerProperties(
-        // circleColor: x,
+        // circleColor: colors[0],
         circleColor: [
-          'case',
+          Expressions.caseExpression,
           [Expressions.get, 'felt'],
           // x,
           colors[0],
@@ -115,7 +115,6 @@ class FullMapState extends State<FullMap> {
           40
         ],
       ),
-      // filter: x,
     );
     await controller.addLayer(
         "earthquakes",
@@ -301,3 +300,4 @@ class FullMapState extends State<FullMap> {
         ));
   }
 }
+

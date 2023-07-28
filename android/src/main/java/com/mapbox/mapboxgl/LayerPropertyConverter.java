@@ -5,6 +5,7 @@ package com.mapbox.mapboxgl;
 
 import static com.mapbox.mapboxgl.Convert.toMap;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
@@ -454,10 +455,18 @@ class LayerPropertyConverter {
     return properties.toArray(new PropertyValue[properties.size()]);
   }
 
-  static Expression interpretClusterPropertyExpression(Object o) {
-    final JsonParser parser = new JsonParser();
-    final JsonElement jsonElement = parser.parse(o.toString());
+  static List<Expression> interpretClusterPropertyExpression(String value) {
+    List<Expression> expressionList = new LinkedList();
 
-    return Expression.Converter.convert(jsonElement);
+    JsonArray jsonArray = new JsonParser()
+        .parse(value)
+        .getAsJsonArray();
+
+    for (int i = 0; i < 2; i++) {
+      expressionList.add(Expression.Converter.convert(jsonArray.get(i)));
+
+    }
+
+    return expressionList;
   }
 }

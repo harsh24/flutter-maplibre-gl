@@ -3,8 +3,6 @@ package com.mapbox.mapboxgl;
 import android.net.Uri;
 import com.google.gson.Gson;
 import android.util.Log;
-import java.util.ArrayList;
-import static com.mapbox.mapboxgl.Convert.toMap;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngQuad;
@@ -114,20 +112,17 @@ class SourcePropertyConverter {
     final Object clusterProperties = data.get("clusterProperties");
 
     if (clusterProperties != null) {
-      final Map<String, ArrayList> properties = (Map<String, ArrayList>) toMap(clusterProperties);
+      final Map<String, String> properties = (Map<String, String>) Convert
+          .toMap(clusterProperties);
 
-      for (Map.Entry<String, ArrayList> entry : properties.entrySet()) {
-        final ArrayList value = entry.getValue();
+      for (Map.Entry<String, String> entry : properties.entrySet()) {
+        List<Expression> expressionList = LayerPropertyConverter
+            .interpretClusterPropertyExpression(entry.getValue());
 
-        Expression expression1 = LayerPropertyConverter
-            .interpretClusterPropertyExpression(value.get(0));
-        Expression expression2 = LayerPropertyConverter
-            .interpretClusterPropertyExpression(value.get(1));
-
-        options = options.withClusterProperty(entry.getKey(), expression1,
-            expression2);
+        options = options.withClusterProperty(entry.getKey(), expressionList.get(0),
+            expressionList.get(1));
       }
-
+      
     }
 
     return options;
