@@ -991,7 +991,8 @@ class MaplibreMapController extends ChangeNotifier {
   }
 
   /// Query rendered features at a point in screen cooridnates
-  Future<int> getClusterZoomLevel(String sourceName, String featureJson) async {
+  Future<dynamic> getClusterZoomLevel(
+      String sourceName, Map<String, dynamic> featureJson) async {
     return _mapboxGlPlatform.getClusterZoomLevel(sourceName, featureJson);
   }
 

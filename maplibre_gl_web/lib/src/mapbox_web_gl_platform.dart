@@ -254,7 +254,7 @@ class MaplibreMapController extends MapLibreGlPlatform
   }
 
   @override
-  Future<int> getClusterZoomLevel(String sourceName, String featureJson) async {
+  Future<dynamic> getClusterZoomLevel(String sourceName, Map<String, dynamic> featureJson) async {
     print('Cluster zoom level not available in web');
     return 0;
   }

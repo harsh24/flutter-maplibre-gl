@@ -158,13 +158,12 @@ class MapboxMapController: NSObject, FlutterPlatformView, MGLMapViewDelegate, Ma
             guard let featureJson = arguments["featureJson"] as? String else { return }
 
             if let geoJsonSource = mapView.style?.source(withIdentifier: sourceName) as? MGLShapeSource {
-        
-            guard let shape = try? MGLShape(data: featureJson.data(using: .utf8)!, encoding: String.Encoding.utf8.rawValue) as! MGLPointFeatureCluster else{ return }
+            guard let shape = try? MGLShape(data: featureJson.data(using: .utf8)!, encoding: String.Encoding.utf8.rawValue) else { return }
+            guard let pointFeature = shape as? MGLPointFeatureCluster else { return }
 
-            //  let pointFeature = shape as MGLPointFeatureCluster
-            
-              let x = geoJsonSource.zoomLevel(forExpanding: shape)
-               result(x)              
+            let zoomLevel = geoJsonSource.zoomLevel(forExpanding: pointFeature)
+
+            result(zoomLevel)              
             }
         break;
         case "map#updateMyLocationTrackingMode":

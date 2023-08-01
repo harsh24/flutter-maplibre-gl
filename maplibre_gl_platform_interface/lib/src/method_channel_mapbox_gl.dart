@@ -294,13 +294,14 @@ class MethodChannelMaplibreGl extends MapLibreGlPlatform {
   }
 
   @override
-  Future<int> getClusterZoomLevel(String sourceName, String featureJson) async {
+  Future<dynamic> getClusterZoomLevel(
+      String sourceName, Map<String, dynamic> featureJson) async {
     try {
-      final int reply = await _channel.invokeMethod(
+      final reply = await _channel.invokeMethod(
         'map#getClusterZoomLevel',
         <String, Object?>{
           'sourceName': sourceName,
-          'featureJson': featureJson,
+          'featureJson': jsonEncode(featureJson),
         },
       );
       return reply;

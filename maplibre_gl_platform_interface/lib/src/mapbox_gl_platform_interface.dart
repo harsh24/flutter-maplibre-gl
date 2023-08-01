@@ -72,7 +72,7 @@ abstract class MapLibreGlPlatform {
   Future<List> querySourceFeatures(
       String sourceId, String? sourceLayerId, List<Object>? filter);
   Future invalidateAmbientCache();
-  Future<int> getClusterZoomLevel(String sourceName, String featureJson);
+  Future<dynamic> getClusterZoomLevel(String sourceName, Map<String, dynamic> featureJson);
   Future<LatLng?> requestMyLocationLatLng();
 
   Future<LatLngBounds> getVisibleRegion();
