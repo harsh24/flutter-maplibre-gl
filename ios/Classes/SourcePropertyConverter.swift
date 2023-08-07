@@ -98,27 +98,27 @@ class SourcePropertyConverter {
         if let clusterMaxZoom = properties["clusterMaxZoom"] as? Double {
             options[.maximumZoomLevelForClustering] = clusterMaxZoom
         }
+        
+        if let clusterProperties = properties["clusterProperties"] as? [String:[String]] {
+    
+            var clusterPropertiesDictionary:[String:[NSExpression?]] = [:]
 
-        /* let firstExpression = LayerPropertyConverter.interpretExpression(
-                propertyName: "propertyName",
-                expression: "[\"any\"]"
-                
-            ) 
-        let secondExpression = LayerPropertyConverter.interpretExpression(
-                propertyName: "a",
-                expression: "[\"<\",[\"get\",\"mag\"], 5]"
-            )
+            for (propertyName, propertyValue) in clusterProperties {
+                let firstExpression = LayerPropertyConverter.interpretExpression(
+                    propertyName: propertyName,
+                    expression: propertyValue[0]
+                )
 
-            // print(firstExpression)
-            // print(secondExpression)
-            /* let first = NSExpression(format: "#any")
-            let second = NSExpression(format: "!=:({$felt, null})")
-            print(first)
-            print(second) */
+                let secondExpression = LayerPropertyConverter.interpretExpression(
+                    propertyName: propertyName,
+                    expression: propertyValue[1]
+                )
 
-        let clusterPropertiesDictionary = ["felt" : [firstExpression,secondExpression]]
-            // print(clusterPropertiesDictionary)
-        options[.clusterProperties] = clusterPropertiesDictionary; */
+            clusterPropertiesDictionary[propertyName] = [firstExpression,secondExpression]
+            }
+            
+            options[.clusterProperties] = clusterPropertiesDictionary;
+        }
 
         if let lineMetrics = properties["lineMetrics"] as? Bool {
             options[.lineDistanceMetrics] = lineMetrics

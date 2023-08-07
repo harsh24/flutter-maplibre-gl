@@ -74,9 +74,17 @@ class FullMapState extends State<FullMap> {
             [
               Expressions.equal,
               [Expressions.get, "mag"],
-              4.0
+              4,
             ]
           ],
+          "sum": [
+            [
+              "max",
+              ["accumulated"],
+              ["get", "sum"]
+            ],
+            ["get", "mag"]
+          ]
         },
       ),
     );
@@ -88,13 +96,12 @@ class FullMapState extends State<FullMap> {
       CircleLayerProperties(
         // circleColor: colors[0],
         circleColor: [
-          Expressions.caseExpression,
+          /*  Expressions.caseExpression,
           [Expressions.get, 'felt'],
-          // x,
           colors[0],
-          colors[4],
-          /*  Expressions.step,
-          [Expressions.get, "mag"],
+          colors[4], */
+          Expressions.step,
+          [Expressions.get, "sum"],
           colors[0],
           2.0,
           colors[1],
@@ -103,7 +110,7 @@ class FullMapState extends State<FullMap> {
           4,
           colors[3],
           5,
-          colors[4], */
+          colors[4],
         ],
         circleRadius: [
           Expressions.step,
@@ -300,4 +307,3 @@ class FullMapState extends State<FullMap> {
         ));
   }
 }
-
