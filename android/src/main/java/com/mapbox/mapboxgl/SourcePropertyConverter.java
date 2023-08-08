@@ -111,12 +111,12 @@ class SourcePropertyConverter {
     final Object clusterProperties = data.get("clusterProperties");
 
     if (clusterProperties != null) {
-      final Map<String, List<String>> properties = (Map<String, List<String>>) toMap
+      final Map<String, List<String>> properties = (Map<String, List<String>>) Convert
           .toMap(clusterProperties);
 
       for (Map.Entry<String, List<String>> entry : properties.entrySet()) {
         final List<String> list = entry.getValue();
-        
+
         Expression firstExpression = LayerPropertyConverter
             .interpretClusterPropertyExpression(list.get(0));
 
