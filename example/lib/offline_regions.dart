@@ -108,7 +108,8 @@ final List<OfflineRegionListItem> allRegions = [
 ];
 
 class OfflineRegionsPage extends ExamplePage {
-  OfflineRegionsPage() : super(const Icon(Icons.map), 'Offline Regions');
+  const OfflineRegionsPage({super.key})
+      : super(const Icon(Icons.map), 'Offline Regions');
 
   @override
   Widget build(BuildContext context) {
@@ -117,14 +118,14 @@ class OfflineRegionsPage extends ExamplePage {
 }
 
 class OfflineRegionBody extends StatefulWidget {
-  const OfflineRegionBody();
+  const OfflineRegionBody({super.key});
 
   @override
-  _OfflineRegionsBodyState createState() => _OfflineRegionsBodyState();
+  State<OfflineRegionBody> createState() => _OfflineRegionsBodyState();
 }
 
 class _OfflineRegionsBodyState extends State<OfflineRegionBody> {
-  List<OfflineRegionListItem> _items = [];
+  final List<OfflineRegionListItem> _items = [];
 
   @override
   void initState() {
@@ -144,7 +145,7 @@ class _OfflineRegionsBodyState extends State<OfflineRegionBody> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               IconButton(
-                icon: Icon(Icons.map),
+                icon: const Icon(Icons.map),
                 onPressed: () => _goToMap(_items[index]),
               ),
               Column(
@@ -153,14 +154,14 @@ class _OfflineRegionsBodyState extends State<OfflineRegionBody> {
                 children: <Widget>[
                   Text(
                     _items[index].name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   Text(
                     'Est. tiles: ${_items[index].estimatedTiles}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
@@ -168,10 +169,10 @@ class _OfflineRegionsBodyState extends State<OfflineRegionBody> {
               ),
               const Spacer(),
               _items[index].isDownloading
-                  ? Container(
-                      child: CircularProgressIndicator(),
+                  ? const SizedBox(
                       height: 16,
                       width: 16,
+                      child: CircularProgressIndicator(),
                     )
                   : IconButton(
                       icon: Icon(
