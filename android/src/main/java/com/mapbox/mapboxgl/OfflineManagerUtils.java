@@ -28,7 +28,8 @@ abstract class OfflineManagerUtils {
             path,
             new OfflineManager.MergeOfflineRegionsCallback() {
               public void onMerge(OfflineRegion[] offlineRegions) {
-                if (result == null) return;
+                if (result == null)
+                  return;
                 List<Map<String, Object>> regionsArgs = new ArrayList<>();
                 for (OfflineRegion offlineRegion : offlineRegions) {
                   regionsArgs.add(offlineRegionToMap(offlineRegion));
@@ -38,7 +39,8 @@ abstract class OfflineManagerUtils {
               }
 
               public void onError(String error) {
-                if (result == null) return;
+                if (result == null)
+                  return;
                 result.error("mergeOfflineRegions Error", error, null);
               }
             });
@@ -50,7 +52,7 @@ abstract class OfflineManagerUtils {
   }
 
   static void clearAmbientCache(MethodChannel.Result result, Context context) {
-    OfflineManager.getInstance(context).clearAmbientCache(new OfflineManager.FileSourceCallback() {
+    OfflineManager.Companion.getInstance(context).clearAmbientCache(new OfflineManager.FileSourceCallback() {
       @Override
       public void onSuccess() {
         result.success(null);
@@ -91,66 +93,65 @@ abstract class OfflineManagerUtils {
 
                 _offlineRegion = offlineRegion;
                 // Observe downloading state
-                OfflineRegion.OfflineRegionObserver observer =
-                    new OfflineRegion.OfflineRegionObserver() {
-                      @Override
-                      public void onStatusChanged(OfflineRegionStatus status) {
-                        // Calculate progress of
-                        // downloading
-                        double progress =
-                            calculateDownloadingProgress(
-                                status.getRequiredResourceCount(),
-                                status.getCompletedResourceCount());
-                        // Check if downloading is
-                        // complete
-                        if (status.isComplete()) {
-                          Log.i(TAG, "Region " + "downloaded " + "successfully.");
-                          // Reset downloading state
-                          _offlineRegion.setDownloadState(OfflineRegion.STATE_INACTIVE);
-                          // This can be called
-                          // multiple times, and
-                          // result can be called
-                          // only once,
-                          // so there is need to
-                          // prevent it
-                          if (isComplete.get()) return;
-                          isComplete.set(true);
-                          channelHandler.onSuccess();
-                        } else {
-                          Log.i(TAG, "Region " + "download " + "progress = " + progress);
-                          channelHandler.onProgress(progress);
-                        }
-                      }
+                OfflineRegion.OfflineRegionObserver observer = new OfflineRegion.OfflineRegionObserver() {
+                  @Override
+                  public void onStatusChanged(OfflineRegionStatus status) {
+                    // Calculate progress of
+                    // downloading
+                    double progress = calculateDownloadingProgress(
+                        status.getRequiredResourceCount(),
+                        status.getCompletedResourceCount());
+                    // Check if downloading is
+                    // complete
+                    if (status.isComplete()) {
+                      Log.i(TAG, "Region " + "downloaded " + "successfully.");
+                      // Reset downloading state
+                      _offlineRegion.setDownloadState(OfflineRegion.STATE_INACTIVE);
+                      // This can be called
+                      // multiple times, and
+                      // result can be called
+                      // only once,
+                      // so there is need to
+                      // prevent it
+                      if (isComplete.get())
+                        return;
+                      isComplete.set(true);
+                      channelHandler.onSuccess();
+                    } else {
+                      Log.i(TAG, "Region " + "download " + "progress = " + progress);
+                      channelHandler.onProgress(progress);
+                    }
+                  }
 
-                      @Override
-                      public void onError(OfflineRegionError error) {
-                        Log.e(TAG, "onError reason: " + error.getReason());
-                        Log.e(TAG, "onError message: " + error.getMessage());
-                        // Reset downloading state
-                        _offlineRegion.setDownloadState(OfflineRegion.STATE_INACTIVE);
-                        isComplete.set(true);
-                        channelHandler.onError(
-                            "Downloading error", error.getMessage(), error.getReason());
-                      }
+                  @Override
+                  public void onError(OfflineRegionError error) {
+                    Log.e(TAG, "onError reason: " + error.getReason());
+                    Log.e(TAG, "onError message: " + error.getMessage());
+                    // Reset downloading state
+                    _offlineRegion.setDownloadState(OfflineRegion.STATE_INACTIVE);
+                    isComplete.set(true);
+                    channelHandler.onError(
+                        "Downloading error", error.getMessage(), error.getReason());
+                  }
 
-                      @Override
-                      public void mapboxTileCountLimitExceeded(long limit) {
-                        Log.e(TAG, "Mapbox tile count" + " limit exceeded: " + limit);
-                        // Reset downloading state
-                        _offlineRegion.setDownloadState(OfflineRegion.STATE_INACTIVE);
-                        isComplete.set(true);
-                        channelHandler.onError(
-                            "mapboxTileCountLimitExceeded",
-                            "Mapbox tile count " + "limit " + "exceeded: " + limit,
-                            null);
-                        // Mapbox even after crash
-                        // and not downloading fully
-                        // region still keeps part
-                        // of it in database, so we
-                        // have to remove it
-                        deleteRegion(null, context, _offlineRegion.getId());
-                      }
-                    };
+                  @Override
+                  public void mapboxTileCountLimitExceeded(long limit) {
+                    Log.e(TAG, "Mapbox tile count" + " limit exceeded: " + limit);
+                    // Reset downloading state
+                    _offlineRegion.setDownloadState(OfflineRegion.STATE_INACTIVE);
+                    isComplete.set(true);
+                    channelHandler.onError(
+                        "mapboxTileCountLimitExceeded",
+                        "Mapbox tile count " + "limit " + "exceeded: " + limit,
+                        null);
+                    // Mapbox even after crash
+                    // and not downloading fully
+                    // region still keeps part
+                    // of it in database, so we
+                    // have to remove it
+                    deleteRegion(null, context, _offlineRegion.getId());
+                  }
+                };
 
                 _offlineRegion.setObserver(observer);
 
@@ -203,7 +204,8 @@ abstract class OfflineManagerUtils {
               @Override
               public void onList(OfflineRegion[] offlineRegions) {
                 for (OfflineRegion offlineRegion : offlineRegions) {
-                  if (offlineRegion.getId() != id) continue;
+                  if (offlineRegion.getId() != id)
+                    continue;
 
                   String metadata = "{}";
                   if (metadataMap != null) {
@@ -217,19 +219,22 @@ abstract class OfflineManagerUtils {
                           Map<String, Object> regionData = offlineRegionToMap(offlineRegion);
                           regionData.put("metadata", metadataBytesToMap(metadataBytes));
 
-                          if (result == null) return;
+                          if (result == null)
+                            return;
                           result.success(new Gson().toJson(regionData));
                         }
 
                         @Override
                         public void onError(String error) {
-                          if (result == null) return;
+                          if (result == null)
+                            return;
                           result.error("UpdateMetadataError", error, null);
                         }
                       });
                   return;
                 }
-                if (result == null) return;
+                if (result == null)
+                  return;
                 result.error(
                     "UpdateMetadataError",
                     "There is no " + "region with given id to " + "update.",
@@ -238,7 +243,8 @@ abstract class OfflineManagerUtils {
 
               @Override
               public void onError(String error) {
-                if (result == null) return;
+                if (result == null)
+                  return;
                 result.error("RegionListError", error, null);
               }
             });
@@ -251,25 +257,29 @@ abstract class OfflineManagerUtils {
               @Override
               public void onList(OfflineRegion[] offlineRegions) {
                 for (OfflineRegion offlineRegion : offlineRegions) {
-                  if (offlineRegion.getId() != id) continue;
+                  if (offlineRegion.getId() != id)
+                    continue;
 
                   offlineRegion.delete(
                       new OfflineRegion.OfflineRegionDeleteCallback() {
                         @Override
                         public void onDelete() {
-                          if (result == null) return;
+                          if (result == null)
+                            return;
                           result.success(null);
                         }
 
                         @Override
                         public void onError(String error) {
-                          if (result == null) return;
+                          if (result == null)
+                            return;
                           result.error("DeleteRegionError", error, null);
                         }
                       });
                   return;
                 }
-                if (result == null) return;
+                if (result == null)
+                  return;
                 result.error(
                     "DeleteRegionError",
                     "There is no " + "region with given id to " + "delete.",
@@ -278,7 +288,8 @@ abstract class OfflineManagerUtils {
 
               @Override
               public void onError(String error) {
-                if (result == null) return;
+                if (result == null)
+                  return;
                 result.error("RegionListError", error, null);
               }
             });
